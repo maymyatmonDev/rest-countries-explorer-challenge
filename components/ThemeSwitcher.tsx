@@ -19,11 +19,14 @@ const ThemeSwitcher = () => {
 
   return (
     <Image
-      src={theme === "dark" ? "/light-icon.svg" : "/dark-icon.svg"}
+      src={
+        theme === "dark" ? "/images/light-icon.svg" : "/images/dark-icon.svg"
+      }
       width={50}
       height={50}
       alt="theme"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      style={{ cursor: "pointer" }}
     />
   );
 };

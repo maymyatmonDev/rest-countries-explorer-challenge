@@ -1,6 +1,6 @@
 # Frontend Mentor Challenge Solution By May_M3 - REST Countries API with Color Theme Switcher
 
-![Design preview for the REST Countries API with color theme switcher coding challenge](./design/desktop-preview.jpg)
+![Design preview for the REST Countries API with color theme switcher coding challenge](./public/images/desktop-design-home-dark.jpg)
 
 ## Welcome! 👋
 
