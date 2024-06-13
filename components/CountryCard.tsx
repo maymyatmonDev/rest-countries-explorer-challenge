@@ -8,12 +8,13 @@ interface Props {
   countryName: String;
   population?: String;
   region?: String;
-  capital?: String;
+  capital?: String[];
+  cca3?: String;
 }
 
 export const CountryCard = (props: Props) => {
   return (
-    <Link href={`/country/${props.countryName}`}>
+    <Link href={`/country/${props.cca3}`}>
       <StyledContainer>
         <div className="image-wrapper">
           <div
@@ -40,7 +41,7 @@ export const CountryCard = (props: Props) => {
           {props.capital && (
             <p>
               <span>Capital: </span>
-              {props.capital}
+              {props.capital.map((cap) => cap)}
             </p>
           )}
         </div>

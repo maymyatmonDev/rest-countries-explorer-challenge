@@ -1,13 +1,35 @@
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-nunito-sans: "Nunito_Sans", sans-serif;
+}
+
+@font-face {
+  font-family: "NunitoSans";
+  src: url("/fonts/NunitoSans_7pt_Condensed-Regular.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSans";
+  src: url("/fonts/NunitoSans_10pt-Medium.ttf") format("ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
 * {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  color: hsl(200, 15%, 8%);
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-family: "NunitoSans", sans-serif;
 }
 
 body {
@@ -29,13 +51,4 @@ a {
   html {
     color-scheme: dark;
   }
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-  color: hsl(200, 15%, 8%);
-  /* font-style: italic; */
 }
