@@ -10,12 +10,6 @@ const nunitoSans = Nunito_Sans({
   display: "swap",
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "Rest countries api with color theme switcher",
   description:
@@ -25,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: any) {
   return (
     <html lang="en">
-      <body className={nunitoSans ? nunitoSans.className : inter.className}>
+      <body className={nunitoSans.className}>
         <Providers>
           <Navbar />
           {children}

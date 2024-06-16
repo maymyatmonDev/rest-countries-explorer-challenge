@@ -24,5 +24,11 @@ const StyledNav = styled.nav`
   box-shadow: 5px 5px 5px hsl(209deg 23% 22% / 5%);
   h1 {
     font-size: 18px;
+    @media (max-width: 425px) {
+      font-size: 14px;
+    }
+  }
+  @media (max-width: 425px) {
+    padding-block: 20px;
   }
 `;
