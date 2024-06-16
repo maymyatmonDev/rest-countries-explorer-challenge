@@ -64,7 +64,7 @@ const StyledContainer = styled.div`
   }
   .image-wrapper {
     width: 100%;
-    height: 150px;
+    height: 170px;
     overflow: hidden;
   }
   .image {
@@ -76,15 +76,16 @@ const StyledContainer = styled.div`
     transition: all 0.5s ease;
   }
   .content {
-    padding: 15px;
+    padding: 25px 25px 40px 25px;
     h1 {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       padding-bottom: 15px;
     }
     p {
       font-size: 14px;
       font-weight: 300;
+      margin-bottom: 8px;
       span {
         font-weight: 600;
       }

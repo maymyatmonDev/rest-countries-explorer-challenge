@@ -44,5 +44,8 @@ const StyledContainer = styled.div`
   p {
     font-size: 14px;
     font-weight: 500;
+    @media (max-width: 425px) {
+      font-size: 11px;
+    }
   }
 `;
