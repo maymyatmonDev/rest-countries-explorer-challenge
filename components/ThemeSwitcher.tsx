@@ -8,7 +8,10 @@ import styled from "styled-components";
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const currentTheme = localStorage.getItem("theme");
+  let currentTheme: any = "";
+  if (typeof window !== "undefined") {
+    currentTheme = localStorage.getItem("theme");
+  }
 
   useEffect(() => {
     setMounted(true);
