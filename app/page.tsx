@@ -17,7 +17,7 @@ interface filterProps {
 }
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState<Boolean>(true);
@@ -27,8 +27,6 @@ export default function Home() {
     region: "all",
     searchValue: "",
   });
-
-  console.log("theme", theme);
 
   const fetchRegions = async () => {
     try {
@@ -91,7 +89,6 @@ export default function Home() {
 
   useEffect(() => {
     fetchRegions();
-    setTheme("light");
     setMounted(true);
   }, []);
 
@@ -100,7 +97,7 @@ export default function Home() {
   }
 
   return (
-    <StyledMain>
+    <StyledMain theme={theme}>
       <Grid container justifyContent="space-between" className="filter-section">
         <Grid item xs={12} lg={4} className="search-field">
           <SearchIcon />
@@ -174,7 +171,7 @@ export default function Home() {
   );
 }
 
-const StyledMain = styled.main`
+const StyledMain = styled.main<{ theme?: string }>`
   margin-inline: 5%;
   min-height: 100vh;
   padding-block: 40px;
@@ -191,10 +188,13 @@ const StyledMain = styled.main`
     padding-inline: 2%;
     align-items: center;
     gap: 10px;
-    background-color: var(--color-white);
     border-radius: 5px;
-    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 6%),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+    background-color: ${(props) =>
+      props.theme === "light" ? "#fff" : "var(--color-dark-blue)"};
+    box-shadow: ${(props) =>
+      props.theme === "light"
+        ? "0 0.5rem 1rem rgb(0 0 0 / 6%),inset 0 -1px 0 rgba(255, 255, 255, 0.15)"
+        : "0 0.5rem 1rem rgb(0 0 0 / 6%), 0 0 0 rgba(255, 255, 255, 0.15)"};
     svg {
       path {
         color: var(--color-dark-grey);
@@ -211,6 +211,10 @@ const StyledMain = styled.main`
     }
     input {
       font-size: 14px;
+      color: ${(props) =>
+        props.theme === "light"
+          ? "var(--color-dark-grey)"
+          : "var(--color-light)"};
     }
     @media (max-width: 1200px) {
       padding-block: 15px;
@@ -222,10 +226,17 @@ const StyledMain = styled.main`
     }
   }
   #region-select {
-    background-color: var(--color-white);
+    background-color: ${(props) =>
+      props.theme === "light" ? "#fff" : "var(--color-dark-blue)"};
+    box-shadow: ${(props) =>
+      props.theme === "light"
+        ? "0 0.5rem 1rem rgb(0 0 0 / 6%),inset 0 -1px 0 rgba(255, 255, 255, 0.15)"
+        : "0 0.5rem 1rem rgb(0 0 0 / 6%), 0 0 0 rgba(255, 255, 255, 0.15)"};
+    color: ${(props) =>
+      props.theme === "light"
+        ? "var(--color-dark-grey)"
+        : "var(--color-light)"};
     border-radius: 5px;
-    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 6%),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
     font-size: 14px;
     @media (max-width: 425px) {
       padding-block: 10px;
@@ -236,7 +247,7 @@ const StyledMain = styled.main`
   }
   .country-item {
     @media (max-width: 768px) {
-      padding-top: 20px !important;
+      padding-top: 30px !important;
     }
   }
   .not-found-message {

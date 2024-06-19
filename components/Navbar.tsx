@@ -3,6 +3,7 @@ import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 import styled from "styled-components";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 interface Props {}
 
@@ -10,7 +11,9 @@ export const Navbar = (props: Props) => {
   const { theme } = useTheme();
   return (
     <StyledNav theme={theme}>
-      <h1>Where is in the world?</h1>
+      <Link href="/">
+        <h1>Where is in the world?</h1>
+      </Link>
       <ThemeSwitcher />
     </StyledNav>
   );
@@ -26,10 +29,14 @@ const StyledNav = styled.nav<{ theme?: string }>`
   background-color: ${(props) =>
     props.theme === "light"
       ? "var(--color-bg-light-gray)"
-      : "var(--color-bg-dark-blue)"};
-  transition: all 0.3s ease-in;
+      : "var(--color-dark-blue)"};
+  transition: all 0.2s ease-in;
   h1 {
     font-size: 18px;
+    color: ${(props) =>
+      props.theme === "light"
+        ? "var(--color-dark-blue)"
+        : "var(--color-light)"};
     @media (max-width: 425px) {
       font-size: 14px;
     }

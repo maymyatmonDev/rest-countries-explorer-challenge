@@ -27,26 +27,21 @@ The goal of this challenge is to build an application that fetches data from the
 
 - Home Page
   All Countries Display: Fetches and displays a list of all countries.
-
   ![Screenshot: All countries displayed on the homepage](./public/images/country-list.png)
 
 - Search Functionality: Allows users to search for countries by name.
-
   ![Screenshot: User searching for a country](./public/images/search-filter.png)
 
 - Filter by Region: Users can filter countries by region using a dropdown menu.
-
   ![Screenshot: Filtering countries by region](./public/images/region-filter.png)
 
 - Country Details Page
-  Detailed Information: Provides detailed information about a selected country.
-
-  Screenshot: Detailed information of a selected country
+  . Detailed Information: Provides detailed information about a selected country.
+  ![Screenshot: Detailed information of a selected country](./public/images/country-detail.png)
 
 - Dark Mode Toggle
-  Theme Switcher: Users can switch between light and dark themes.
-
-  Screenshot: Dark mode enabled
+  . Theme Switcher: Users can switch between light and dark themes.
+  ![Screenshot: Dark mode enabled](./public/images/dark-mode.png)
 
 ## What I Learned from this challenge 👩🏻‍💻💜
 
