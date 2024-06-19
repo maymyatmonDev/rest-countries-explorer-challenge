@@ -20,7 +20,6 @@ export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [countries, setCountries] = useState([]);
-  const [filteredCountries, setFilteredCountries] = useState([]);
   const [loading, setLoading] = useState<Boolean>(true);
   const [error, setError] = useState<any>(null);
   const [regions, setRegions] = useState<String[]>(["test"]);
@@ -29,62 +28,46 @@ export default function Home() {
     searchValue: "",
   });
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const res = await fetch("https://restcountries.com/v3.1/all");
-        const data = await res.json();
-        setCountries(data);
+  console.log("theme", theme);
 
-        // Extract unique regions
-        const regionList = data.map((item: any) => item.region);
-        const list: String[] = [];
-        regionList.map((reg: String) => {
-          if (list.includes(reg)) {
-            return;
-          } else {
-            list.push(reg);
-          }
-        });
-        setRegions(list);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCountries();
-    setTheme("light");
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const filterCountries = async () => {
-      setLoading(true);
-      try {
-        let res = null;
-        if (filter.region !== "all") {
-          res = await fetch(
-            `https://restcountries.com/v3.1/region/${filter.region}`
-          );
-        } else {
-          res = await fetch("https://restcountries.com/v3.1/all");
-        }
-        const data = await res?.json();
-        setCountries(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    filterCountries();
-  }, [filter]);
-
-  const searchFilter = async (value: String) => {
+  const fetchRegions = async () => {
     try {
-      let res = await fetch(`https://restcountries.com/v3.1/name/${value}`);
+      const res = await fetch("https://restcountries.com/v3.1/all");
       const data = await res.json();
+      setCountries(data);
+
+      // Extract unique regions
+      const regionList = data.map((item: any) => item.region);
+      const list: String[] = [];
+      regionList.map((reg: String) => {
+        if (list.includes(reg)) {
+          return;
+        } else {
+          list.push(reg);
+        }
+      });
+      setRegions(list);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCountries = async (value: String, type: String) => {
+    let query = value
+      ? type === "region"
+        ? value === "all"
+          ? `all`
+          : `region/${value}`
+        : value !== ""
+        ? `name/${value}`
+        : `all`
+      : "all";
+    try {
+      let res = null;
+      res = await fetch(`https://restcountries.com/v3.1/${query}`);
+      const data = await res?.json();
       setCountries(data);
     } catch (err) {
       setError(err);
@@ -93,20 +76,24 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-    setFilter({ ...filter, region: "all" });
-    filter.searchValue !== "" &&
-      setTimeout(() => {
-        searchFilter(filter.searchValue);
-      }, 2000);
-  }, [filter.searchValue]);
-
   const handleFilter = (value: String, type: String) => {
-    type === "region"
-      ? setFilter({ ...filter, region: value })
-      : setFilter({ ...filter, searchValue: value });
+    if (type === "region") {
+      setFilter({ ...filter, region: value });
+      fetchCountries(value, type);
+    } else {
+      setLoading(true);
+      setFilter({ ...filter, searchValue: value });
+      setTimeout(() => {
+        fetchCountries(value, type);
+      }, 1000);
+    }
   };
+
+  useEffect(() => {
+    fetchRegions();
+    setTheme("light");
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
     return null;
