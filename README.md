@@ -20,7 +20,6 @@ The goal of this challenge is to build an application that fetches data from the
 # Technologies Used
 
 - Next.js: For server-side rendering and generating static websites.
-- GraphQL with Apollo Client: For efficient data fetching and state management.
 - Styled-components: For component-level styling with support for dynamic themes.
 - Material UI: For robust and customizable UI components and icons.
 
@@ -28,38 +27,27 @@ The goal of this challenge is to build an application that fetches data from the
 
 - Home Page
   All Countries Display: Fetches and displays a list of all countries.
-
-  Screenshot: All countries displayed on the homepage
+  ![Screenshot: All countries displayed on the homepage](./public/images/country-list.png)
 
 - Search Functionality: Allows users to search for countries by name.
-
-  Screenshot: User searching for a country
+  ![Screenshot: User searching for a country](./public/images/search-filter.png)
 
 - Filter by Region: Users can filter countries by region using a dropdown menu.
-
-  Screenshot: Filtering countries by region
+  ![Screenshot: Filtering countries by region](./public/images/region-filter.png)
 
 - Country Details Page
-  Detailed Information: Provides detailed information about a selected country.
-
-  Screenshot: Detailed information of a selected country
-
-- Border Countries Navigation: Users can navigate to bordering countries.
-
-  Screenshot: Navigating to border countries
+  . Detailed Information: Provides detailed information about a selected country.
+  ![Screenshot: Detailed information of a selected country](./public/images/country-detail.png)
 
 - Dark Mode Toggle
-  Theme Switcher: Users can switch between light and dark themes.
-
-  Screenshot: Dark mode enabled
+  . Theme Switcher: Users can switch between light and dark themes.
+  ![Screenshot: Dark mode enabled](./public/images/dark-mode.png)
 
 ## What I Learned from this challenge 👩🏻‍💻💜
 
 This project provided me with the opportunity to enhance my skills in several key areas:
 
 - Next.js: Although I am experienced with GraphQL, Material UI, and styled-components, this project was my first deep dive into Next.js. I learned how to effectively use server-side rendering, static site generation, and dynamic routing to optimize performance and SEO. I also explored Next.js' file-based routing system and how to integrate it seamlessly with GraphQL and Apollo Client.
-
-- GraphQL with Apollo Client: Reinforced my skills in using Apollo Client for managing GraphQL queries and mutations, and learned best practices for integrating it with Next.js for efficient data fetching and state management.
 
 - Styled-components: Improved my ability to create dynamic, themeable styles with styled-components, and learned how to integrate them with Next.js for both server-side and client-side rendering.
 

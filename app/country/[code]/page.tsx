@@ -8,6 +8,7 @@ import Link from "next/link";
 import data from "../../../data.json";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useTheme } from "next-themes";
 
 interface Props {}
 
@@ -18,6 +19,7 @@ const CountryDetail = (props: Props) => {
   const [country, setCountry] = useState<any>(null);
   const [loading, setLoading] = useState<Boolean>(true);
   const [error, setError] = useState<any>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (searchParams.code) {
@@ -42,7 +44,7 @@ const CountryDetail = (props: Props) => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <StyleContainer>
+    <StyleContainer theme={theme}>
       <Link href={"/"} className="back-btn">
         <KeyboardBackspaceIcon fontSize="small" />
         Back
@@ -66,12 +68,14 @@ const CountryDetail = (props: Props) => {
               <h1>{country.name?.common}</h1>
               <div className="desc">
                 <div>
-                  <p>
-                    <span>Native Name: </span>{" "}
-                    {country.nativeName?.map(
-                      (native_name: any) => native_name.official
-                    )}
-                  </p>
+                  {country.nativeName && (
+                    <p>
+                      <span>Native Name: </span>{" "}
+                      {country.nativeName?.map(
+                        (native_name: any) => native_name.official
+                      )}
+                    </p>
+                  )}
                   <p>
                     <span>Population: </span>
                     {country.population}
@@ -127,7 +131,7 @@ const CountryDetail = (props: Props) => {
 
 export default CountryDetail;
 
-const StyleContainer = styled.div`
+const StyleContainer = styled.div<{ theme?: string }>`
   margin-inline: 5%;
   padding-block: 50px;
   @media (max-width: 425px) {
@@ -137,8 +141,12 @@ const StyleContainer = styled.div`
     padding-inline: 25px;
     padding-block: 10px;
     border-radius: 5px;
-    box-shadow: -2px 0rem 10px -2px rgb(0 0 0 / 14%),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+    background-color: ${(props) =>
+      props.theme === "light" ? "#fff" : "var(--color-dark-blue)"};
+    box-shadow: ${(props) =>
+      props.theme === "light"
+        ? "0 0.5rem 1rem rgb(0 0 0 / 6%),inset 0 -1px 0 rgba(255, 255, 255, 0.15)"
+        : "0 0.5rem 1rem rgb(0 0 0 / 6%), 0 0 0 rgba(255, 255, 255, 0.15)"};
     margin-bottom: 40px;
     width: max-content;
     display: flex;
@@ -147,6 +155,12 @@ const StyleContainer = styled.div`
     gap: 5px;
     font-size: 14px;
     color: var(--color-dark-grey);
+    svg {
+      color: ${(props) =>
+        props.theme === "light"
+          ? "var(--color-dark-blue)"
+          : "var(--color-dark-grey)"};
+    }
   }
   img {
     width: 100%;
@@ -156,6 +170,13 @@ const StyleContainer = styled.div`
     border-radius: 5px;
   }
   .content {
+    h1,
+    p {
+      color: ${(props) =>
+        props.theme === "light"
+          ? "var(--color-text-dark-blue)"
+          : "var(--color-light)"};
+    }
     h1 {
       font-size: 24px;
       margin-bottom: 15px;
@@ -167,6 +188,11 @@ const StyleContainer = styled.div`
     p {
       margin-bottom: 10px;
       font-size: 14px;
+      font-weight: 300;
+      color: ${(props) =>
+        props.theme === "light"
+          ? "var(--color-text-dark-blue)"
+          : "var(--color-light)"};
       span {
         font-weight: 600;
       }

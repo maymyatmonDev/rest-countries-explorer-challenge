@@ -17,10 +17,9 @@ interface filterProps {
 }
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [countries, setCountries] = useState([]);
-  const [filteredCountries, setFilteredCountries] = useState([]);
   const [loading, setLoading] = useState<Boolean>(true);
   const [error, setError] = useState<any>(null);
   const [regions, setRegions] = useState<String[]>(["test"]);
@@ -29,62 +28,44 @@ export default function Home() {
     searchValue: "",
   });
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const res = await fetch("https://restcountries.com/v3.1/all");
-        const data = await res.json();
-        setCountries(data);
-
-        // Extract unique regions
-        const regionList = data.map((item: any) => item.region);
-        const list: String[] = [];
-        regionList.map((reg: String) => {
-          if (list.includes(reg)) {
-            return;
-          } else {
-            list.push(reg);
-          }
-        });
-        setRegions(list);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCountries();
-    setTheme("light");
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const filterCountries = async () => {
-      setLoading(true);
-      try {
-        let res = null;
-        if (filter.region !== "all") {
-          res = await fetch(
-            `https://restcountries.com/v3.1/region/${filter.region}`
-          );
-        } else {
-          res = await fetch("https://restcountries.com/v3.1/all");
-        }
-        const data = await res?.json();
-        setCountries(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    filterCountries();
-  }, [filter]);
-
-  const searchFilter = async (value: String) => {
+  const fetchRegions = async () => {
     try {
-      let res = await fetch(`https://restcountries.com/v3.1/name/${value}`);
+      const res = await fetch("https://restcountries.com/v3.1/all");
       const data = await res.json();
+      setCountries(data);
+
+      // Extract unique regions
+      const regionList = data.map((item: any) => item.region);
+      const list: String[] = [];
+      regionList.map((reg: String) => {
+        if (list.includes(reg)) {
+          return;
+        } else {
+          list.push(reg);
+        }
+      });
+      setRegions(list);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCountries = async (value: String, type: String) => {
+    let query = value
+      ? type === "region"
+        ? value === "all"
+          ? `all`
+          : `region/${value}`
+        : value !== ""
+        ? `name/${value}`
+        : `all`
+      : "all";
+    try {
+      let res = null;
+      res = await fetch(`https://restcountries.com/v3.1/${query}`);
+      const data = await res?.json();
       setCountries(data);
     } catch (err) {
       setError(err);
@@ -93,27 +74,30 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-    setFilter({ ...filter, region: "all" });
-    filter.searchValue !== "" &&
-      setTimeout(() => {
-        searchFilter(filter.searchValue);
-      }, 2000);
-  }, [filter.searchValue]);
-
   const handleFilter = (value: String, type: String) => {
-    type === "region"
-      ? setFilter({ ...filter, region: value })
-      : setFilter({ ...filter, searchValue: value });
+    if (type === "region") {
+      setFilter({ ...filter, region: value });
+      fetchCountries(value, type);
+    } else {
+      setLoading(true);
+      setFilter({ ...filter, searchValue: value });
+      setTimeout(() => {
+        fetchCountries(value, type);
+      }, 1000);
+    }
   };
+
+  useEffect(() => {
+    fetchRegions();
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
     return null;
   }
 
   return (
-    <StyledMain>
+    <StyledMain theme={theme}>
       <Grid container justifyContent="space-between" className="filter-section">
         <Grid item xs={12} lg={4} className="search-field">
           <SearchIcon />
@@ -187,7 +171,7 @@ export default function Home() {
   );
 }
 
-const StyledMain = styled.main`
+const StyledMain = styled.main<{ theme?: string }>`
   margin-inline: 5%;
   min-height: 100vh;
   padding-block: 40px;
@@ -204,10 +188,13 @@ const StyledMain = styled.main`
     padding-inline: 2%;
     align-items: center;
     gap: 10px;
-    background-color: var(--color-white);
     border-radius: 5px;
-    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 6%),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+    background-color: ${(props) =>
+      props.theme === "light" ? "#fff" : "var(--color-dark-blue)"};
+    box-shadow: ${(props) =>
+      props.theme === "light"
+        ? "0 0.5rem 1rem rgb(0 0 0 / 6%),inset 0 -1px 0 rgba(255, 255, 255, 0.15)"
+        : "0 0.5rem 1rem rgb(0 0 0 / 6%), 0 0 0 rgba(255, 255, 255, 0.15)"};
     svg {
       path {
         color: var(--color-dark-grey);
@@ -224,6 +211,10 @@ const StyledMain = styled.main`
     }
     input {
       font-size: 14px;
+      color: ${(props) =>
+        props.theme === "light"
+          ? "var(--color-dark-grey)"
+          : "var(--color-light)"};
     }
     @media (max-width: 1200px) {
       padding-block: 15px;
@@ -235,10 +226,17 @@ const StyledMain = styled.main`
     }
   }
   #region-select {
-    background-color: var(--color-white);
+    background-color: ${(props) =>
+      props.theme === "light" ? "#fff" : "var(--color-dark-blue)"};
+    box-shadow: ${(props) =>
+      props.theme === "light"
+        ? "0 0.5rem 1rem rgb(0 0 0 / 6%),inset 0 -1px 0 rgba(255, 255, 255, 0.15)"
+        : "0 0.5rem 1rem rgb(0 0 0 / 6%), 0 0 0 rgba(255, 255, 255, 0.15)"};
+    color: ${(props) =>
+      props.theme === "light"
+        ? "var(--color-dark-grey)"
+        : "var(--color-light)"};
     border-radius: 5px;
-    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 6%),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.15);
     font-size: 14px;
     @media (max-width: 425px) {
       padding-block: 10px;
@@ -249,7 +247,7 @@ const StyledMain = styled.main`
   }
   .country-item {
     @media (max-width: 768px) {
-      padding-top: 20px !important;
+      padding-top: 30px !important;
     }
   }
   .not-found-message {

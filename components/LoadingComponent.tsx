@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { useTheme } from "next-themes";
 
 interface Props {}
 
 export const LoadingComponent = (props: Props) => {
+  const { theme } = useTheme();
   return (
-    <StyledContainer>
+    <StyledContainer theme={theme}>
       <div id="loading">
         <ul className="loading">
           <li className="blue"></li>
@@ -37,7 +39,7 @@ export const LoadingComponent = (props: Props) => {
   );
 };
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ theme?: string }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -122,5 +124,9 @@ const StyledContainer = styled.div`
     font-size: 14px;
     letter-spacing: 2.5px;
     text-align: center;
+    color: ${(props) =>
+      props.theme === "light"
+        ? "var(--color-text-dark-blue)"
+        : "var(--color-light)"};
   }
 `;
